@@ -1,0 +1,140 @@
+---
+	const pdfUrl = "/assets/Chung_Hannah_Resume.pdf";
+	const previewUrl = "/assets/Chung_Hannah_Resume.png";
+	const backgroundUrl = "/assets/resume-bg.mp4";
+	const landingUrl = "/assets/cloud.mp4";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Resume</title>
+		<style>
+			html,
+			body {
+				margin: 0;
+				width: 100%;
+				height: 100%;
+			}
+
+			body {
+				background: #ffffff;
+				overflow: hidden;
+				position: relative;
+			}
+
+			.background-video {
+				position: fixed;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center;
+				z-index: 0;
+			}
+
+			.preview {
+				position: relative;
+				z-index: 1;
+				height: 100%;
+				display: grid;
+				place-items: center;
+				padding: 32px;
+			}
+
+			.preview img {
+				width: min(25vw, 360px);
+				height: auto;
+				box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+			}
+
+			.video-transition {
+				position: fixed;
+				inset: 0;
+				pointer-events: none;
+				opacity: 1;
+				z-index: 2;
+				-webkit-mask-image:
+					repeating-linear-gradient(
+						90deg,
+						#000 0 28px,
+						transparent 28px 56px
+					),
+					repeating-linear-gradient(
+						0deg,
+						#000 0 28px,
+						transparent 28px 56px
+					);
+				-webkit-mask-size: 10px 10px;
+				-webkit-mask-repeat: repeat;
+				mask-image:
+					repeating-linear-gradient(
+						90deg,
+						#000 0 28px,
+						transparent 28px 56px
+					),
+					repeating-linear-gradient(
+						0deg,
+						#000 0 28px,
+						transparent 28px 56px
+					);
+				mask-size: 10px 10px;
+				mask-repeat: repeat;
+				animation: pixel-hide 1.8s steps(6, end) forwards;
+			}
+
+			.video-transition video {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			@keyframes pixel-hide {
+				0% {
+					opacity: 1;
+					-webkit-mask-size: 10px 10px;
+					mask-size: 10px 10px;
+					-webkit-mask-position: 36px 20px, 20px 36px;
+					mask-position: 36px 20px, 20px 36px;
+				}
+				60% {
+					opacity: 0.6;
+					-webkit-mask-size: 36px 36px;
+					mask-size: 36px 36px;
+					-webkit-mask-position: 18px 8px, 8px 18px;
+					mask-position: 18px 8px, 8px 18px;
+				}
+				100% {
+					opacity: 0;
+					-webkit-mask-size: 56px 56px;
+					mask-size: 56px 56px;
+					-webkit-mask-position: 0 0, 0 0;
+					mask-position: 0 0, 0 0;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<video
+			class="background-video"
+			src={backgroundUrl}
+			autoplay
+			muted
+			loop
+			playsinline
+		></video>
+		<a class="preview" href={pdfUrl} target="_blank" rel="noopener noreferrer">
+			<img src={previewUrl} alt="Resume preview" />
+		</a>
+		<div class="video-transition" aria-hidden="true">
+			<video
+				src={landingUrl}
+				autoplay
+				muted
+				loop
+				playsinline
+			></video>
+		</div>
+	</body>
+</html>

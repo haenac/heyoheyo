@@ -128,6 +128,50 @@
 				object-position: top;
 			}
 
+			.video-transition {
+				position: fixed;
+				inset: 0;
+				opacity: 0;
+				pointer-events: none;
+				z-index: 5;
+				-webkit-mask-image:
+					repeating-linear-gradient(
+						90deg,
+						#000 0 28px,
+						transparent 28px 56px
+					),
+					repeating-linear-gradient(
+						0deg,
+						#000 0 28px,
+						transparent 28px 56px
+					);
+				-webkit-mask-size: 56px 56px;
+				-webkit-mask-repeat: repeat;
+				mask-image:
+					repeating-linear-gradient(
+						90deg,
+						#000 0 28px,
+						transparent 28px 56px
+					),
+					repeating-linear-gradient(
+						0deg,
+						#000 0 28px,
+						transparent 28px 56px
+					);
+				mask-size: 56px 56px;
+				mask-repeat: repeat;
+			}
+
+			.video-transition video {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			body.is-transitioning .video-transition {
+				animation: pixel-reveal 1.8s steps(6, end) forwards;
+			}
+
 			.float-resume {
 				left: 12%;
 				top: 10%;
@@ -261,6 +305,31 @@
 				}
 			}
 
+			@keyframes pixel-reveal {
+				0% {
+					opacity: 0;
+					-webkit-mask-size: 56px 56px;
+					mask-size: 56px 56px;
+					-webkit-mask-position: 0 0, 0 0;
+					mask-position: 0 0, 0 0;
+				}
+				40% {
+					opacity: 0.6;
+					-webkit-mask-size: 36px 36px;
+					mask-size: 36px 36px;
+					-webkit-mask-position: 18px 8px, 8px 18px;
+					mask-position: 18px 8px, 8px 18px;
+				}
+				100% {
+					opacity: 1;
+					-webkit-mask-size: 10px 10px;
+					mask-size: 10px 10px;
+					-webkit-mask-position: 36px 20px, 20px 36px;
+					mask-position: 36px 20px, 20px 36px;
+				}
+			}
+
+
 			@keyframes glitchy-drift {
 				0% {
 					transform: translate(0, 0);
@@ -340,7 +409,10 @@
 			<h1 data-text="Heyo Studio">Heyo Studio</h1>
 		</main>
 		<div class="float-links" aria-label="Primary links">
-			<a class="float-resume" href="/resume"><span>Resume</span></a>
+			<a
+				class="float-resume"
+				href="/resume/"
+			><span>Resume</span></a>
 			<a class="float-projects" href="/projects"><span>Projects</span></a>
 			<a class="float-poetry" href="/poetry"><span>Poetry</span></a>
 			<a class="float-life" href="/life"><span>Life</span></a>
@@ -354,5 +426,27 @@
 				playsinline
 			></video>
 		</div>
+		<div class="video-transition" aria-hidden="true">
+			<video
+				src="/assets/resume-bg.mp4"
+				autoplay
+				muted
+				loop
+				playsinline
+			></video>
+		</div>
+		<script>
+			const resumeLink = document.querySelector(".float-resume");
+			if (resumeLink) {
+				resumeLink.addEventListener("click", (event) => {
+					event.preventDefault();
+					document.body.classList.add("is-transitioning");
+					const href = resumeLink.getAttribute("href");
+					setTimeout(() => {
+						window.location.href = href;
+					}, 1400);
+				});
+			}
+		</script>
 	</body>
 </html>
